@@ -9,6 +9,7 @@ import {
   PRICE_RANGES,
   SIZES,
   SORT_OPTIONS,
+  categories,
   getCategory,
   type Product,
 } from "@/data/catalog";
@@ -73,9 +74,9 @@ export const Route = createFileRoute("/category/$categorySlug")({
     return { category: getCategory(params.categorySlug), categorySlug: params.categorySlug };
   },
   head: ({ loaderData }) => {
-    const name = loaderData?.category.name ?? "Products";
+    const name = loaderData!.category?.name ?? "Products";
     const title = `${name} Online – Buy at Best Price | Vaishnavi Marble`;
-    const description = `Shop ${name.toLowerCase()} at Vaishnavi Marble. ${loaderData?.category.tagline ?? ""} Compare brands, sizes, finishes and prices with fast delivery.`;
+    const description = `Shop ${name.toLowerCase()} at Vaishnavi Marble. ${loaderData!.category?.tagline ?? ""} Compare brands, sizes, finishes and prices with fast delivery.`;
     return {
       meta: [
         { title },
