@@ -4,7 +4,7 @@ import kitchenSinkImg from "@/assets/kitchen-sink.jpg";
 import vanityImg from "@/assets/vanity.jpg";
 import parkingImg from "@/assets/parking-tiles.jpg";
 import marbleImg from "@/assets/marble-granite.jpg";
-import { SUB_IMAGES, PRODUCT_IMAGES } from "@/data/sub-images";
+import { SUB_IMAGES, PRODUCT_IMAGES, getProductImage } from "@/data/sub-images";
 
 export type Category = {
   slug: string;
@@ -751,7 +751,7 @@ function makeProduct(cat: Category, sub: Subcategory, topic: string, index: numb
     categoryName: cat.name,
     subcategory: sub.slug,
     subcategoryName: sub.name,
-    image: PRODUCT_IMAGES[topic] ?? SUB_IMAGES[sub.slug] ?? cat.image,
+    image: getProductImage(topic, sub.slug, seed),
     imageFile,
     brand,
     material,

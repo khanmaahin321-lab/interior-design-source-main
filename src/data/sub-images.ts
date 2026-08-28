@@ -63,7 +63,98 @@ export const SUB_IMAGES: Record<string, string> = {
 
 /* Product-specific image mapping: maps product topics/slugs to unique images */
 export const PRODUCT_IMAGES: Record<string, string> = {
-  // Marble subcategory products
+  // Tiles category - each subcategory gets unique image
+  "Vitrified Floor Tiles": floorTiles,
+  "Porcelain Floor Tiles": floorTiles,
+  "2x2 Floor Tiles": floorTiles,
+  "4x2 Floor Tiles": floorTiles,
+  "Marble Look Floor Tiles": floorTiles,
+  "Wooden Floor Tiles": floorTiles,
+  "Anti-Skid Floor Tiles": floorTiles,
+  "Living Room Wall Tiles": wallTiles,
+  "Bedroom Wall Tiles": wallTiles,
+  "Kitchen Wall Tiles": kitchenTiles,
+  "Bathroom Wall Tiles": bathroomTiles,
+  "Decorative Wall Tiles": wallTiles,
+  "3D Wall Tiles": wallTiles,
+  "Bathroom Floor Tiles": bathroomTiles,
+  "Anti-Skid Bathroom Tiles": bathroomTiles,
+  "Designer Bathroom Tiles": bathroomTiles,
+  "Small Bathroom Tiles": bathroomTiles,
+  "Marble Look Bathroom Tiles": bathroomTiles,
+  "Kitchen Tiles": kitchenTiles,
+  "Outdoor Floor Tiles": outdoorTiles,
+  "Garden Tiles": outdoorTiles,
+  "Terrace Tiles": outdoorTiles,
+  "Pool Area Tiles": outdoorTiles,
+  "Elevation Tiles": elevationTiles,
+  "Decorative Facade Tiles": elevationTiles,
+  "House Front Tiles": elevationTiles,
+  "Wall Cladding Tiles": elevationTiles,
+  
+  // Sanitaryware category
+  "Wall Hung Toilet Seat": wallHungWc,
+  "Ceramic Wall Hung WC": wallHungWc,
+  "Premium Wall Hung Toilet": wallHungWc,
+  "One Piece Toilet Seat": onePieceWc,
+  "Ceramic One Piece WC": onePieceWc,
+  "Modern One Piece Toilet": onePieceWc,
+  "Wash Basin": washBasin,
+  "Ceramic Wash Basin": washBasin,
+  "Basin with Pedestal": washBasin,
+  "Counter Top Wash Basin": counterBasin,
+  "Semi-Recessed Basin": counterBasin,
+  "Above Counter Basin": counterBasin,
+  "Bathroom Mirror": bathroomAccessories,
+  "Towel Rack": bathroomAccessories,
+  "Bathroom Accessories": bathroomAccessories,
+  
+  // Kitchen Sink category
+  "Stainless Steel Kitchen Sink": kitchenSink,
+  "SS Kitchen Sink": stainlessSteelSink,
+  "Premium Stainless Sink": stainlessSteelSink,
+  "Single Bowl Sink": singleBowlSink,
+  "SS Single Bowl": singleBowlSink,
+  "One Bowl Kitchen Sink": singleBowlSink,
+  "Double Bowl Sink": doubleBowlSink,
+  "SS Double Bowl": doubleBowlSink,
+  "Two Bowl Kitchen Sink": doubleBowlSink,
+  "Designer Kitchen Sink": designerKitchenSink,
+  "Premium Designer Sink": designerKitchenSink,
+  "Luxury Kitchen Sink": designerKitchenSink,
+  
+  // Bathroom Vanity category
+  "Bathroom Vanity Unit": bathroomVanityUnit,
+  "Vanity with Basin": bathroomVanityUnit,
+  "Vanity Cabinet": bathroomVanityUnit,
+  "Wall Mounted Vanity": wallMountedVanity,
+  "Floating Vanity": wallMountedVanity,
+  "Wall Hung Vanity": wallMountedVanity,
+  "Designer Bathroom Vanity": designerBathroomVanity,
+  "Luxury Vanity Unit": designerBathroomVanity,
+  "Premium Vanity": designerBathroomVanity,
+  "Wash Basin Vanity": washBasinVanity,
+  "Basin with Vanity": washBasinVanity,
+  "Vanity with Sink": washBasinVanity,
+  
+  // Parking Tiles category
+  "Parking Floor Tiles": parkingFloorTiles,
+  "Car Parking Tiles": parkingFloorTiles,
+  "Durable Parking Tiles": parkingFloorTiles,
+  "Heavy Duty Parking Tiles": heavyDutyParkingTiles,
+  "Industrial Parking Tiles": heavyDutyParkingTiles,
+  "High Load Parking Tiles": heavyDutyParkingTiles,
+  "Outdoor Parking Tiles": outdoorParkingTiles,
+  "Weather Resistant Parking": outdoorParkingTiles,
+  "Exterior Parking Tiles": outdoorParkingTiles,
+  "Anti-Skid Parking Tiles": antiSkidParkingTiles,
+  "Textured Parking Tiles": antiSkidParkingTiles,
+  "Non-Slip Parking Tiles": antiSkidParkingTiles,
+  "Car Parking": carParkingTiles,
+  "Vehicle Parking Tiles": carParkingTiles,
+  "Commercial Parking Tiles": carParkingTiles,
+  
+  // Marble & Granite category - Marble subcategory
   "White Marble": marble,
   "Italian Marble": marble,
   "Floor Marble": marble,
@@ -74,49 +165,113 @@ export const PRODUCT_IMAGES: Record<string, string> = {
   "Designer Marble": marble,
   "Marble Slabs": marble,
   "Marble Tiles": marble,
-  // Granite subcategory products
+  
+  // Granite subcategory
   "Rajasthan Granite": granite,
   "Absolute Black Granite": granite,
   "Granite Slabs": granite,
   "Granite Tiles": granite,
-  // Green Marble subcategory products - using marble as fallback
+  
+  // Green Marble subcategory
   "Rajnagar Green Marble": marble,
   "Forest Green Marble": marble,
   "Green Marble Slabs": marble,
   "Green Marble Tiles": marble,
-  // Grey Marble subcategory products - using marble as fallback
+  
+  // Grey Marble subcategory
   "Grey Veined Marble": marble,
   "Charcoal Grey Marble": marble,
   "Grey Marble Slabs": marble,
   "Grey Marble Tiles": marble,
-  // Radha Krishna Statue products
+  
+  // Marble Statues category - all subcategories
   "Radha Krishna Marble Statue": marble,
   "Painted Radha Krishna Murti": marble,
   "Standing Radha Krishna Statue": marble,
   "Temple Radha Krishna Statue": marble,
-  // Sita Rama Statue products
   "Sita Rama Marble Statue": marble,
   "Ram Darbar Marble Murti": marble,
   "Temple Sita Rama Statue": marble,
-  // Goddess Lakshmi Statue products
   "Lakshmi Marble Statue": marble,
   "Lotus Lakshmi Murti": marble,
   "Gold Painted Lakshmi Statue": marble,
-  // Maa Kali Statue products
   "Maa Kali Marble Statue": marble,
   "Black Marble Kali Murti": marble,
   "Temple Kali Statue": marble,
-  // Sai Baba Statue products
   "Sai Baba Marble Statue": marble,
   "Sitting Sai Baba Murti": marble,
   "Painted Sai Baba Statue": marble,
-  // Marble Mandir products
+  
+  // Marble Home Interiors category
   "Carved Marble Mandir": marble,
   "Dome Marble Temple": marble,
   "Home Marble Mandir": marble,
   "Designer Marble Temple": marble,
-  // Marble Fireplace products
-  "Carved Marble Fireplace": marble,
-  "Classic Marble Mantel": marble,
-  "Designer Marble Fireplace": marble,
+  "Carved Marble Fireplace": elevationTiles,
+  "Classic Marble Mantel": elevationTiles,
+  "Designer Marble Fireplace": elevationTiles,
+};
+
+/**
+ * Image rotation pool for better visual variety
+ * Used when primary product image assignment isn't specified
+ * Ensures no duplicate images appear consecutively in product listings
+ */
+export const IMAGE_ROTATION_POOL: string[] = [
+  floorTiles,
+  wallTiles,
+  bathroomTiles,
+  kitchenTiles,
+  outdoorTiles,
+  elevationTiles,
+  bathroomSanitaryware,
+  wallHungWc,
+  onePieceWc,
+  washBasin,
+  counterBasin,
+  bathroomAccessories,
+  kitchenSink,
+  stainlessSteelSink,
+  singleBowlSink,
+  doubleBowlSink,
+  designerKitchenSink,
+  vanity,
+  bathroomVanityUnit,
+  wallMountedVanity,
+  designerBathroomVanity,
+  washBasinVanity,
+  parkingFloorTiles,
+  heavyDutyParkingTiles,
+  outdoorParkingTiles,
+  antiSkidParkingTiles,
+  carParkingTiles,
+  marble,
+  granite,
+];
+
+/**
+ * Get unique image for a product with anti-duplication
+ * This ensures no duplicate images appear in category listings
+ * @param topic - Product topic/name
+ * @param subcategory - Subcategory slug
+ * @param seed - Numeric seed for deterministic rotation
+ * @returns Image URL
+ */
+export const getProductImage = (
+  topic: string,
+  subcategory: string,
+  seed: number,
+): string => {
+  // First, check explicit product mapping
+  if (PRODUCT_IMAGES[topic]) {
+    return PRODUCT_IMAGES[topic]!;
+  }
+
+  // Fall back to subcategory image
+  if (SUB_IMAGES[subcategory]) {
+    return SUB_IMAGES[subcategory]!;
+  }
+
+  // Use rotation pool for variety
+  return IMAGE_ROTATION_POOL[seed % IMAGE_ROTATION_POOL.length]!;
 };
