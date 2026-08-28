@@ -27,6 +27,8 @@ import antiSkidParkingTiles from "@/assets/sub/anti-skid-parking-tiles.jpg";
 import carParkingTiles from "@/assets/sub/car-parking-tiles.jpg";
 import marble from "@/assets/sub/marble.jpg";
 import granite from "@/assets/sub/granite.jpg";
+import greenMarble from "@/assets/sub/marble-green.jpg";
+import greyMarble from "@/assets/sub/marble-grey.jpg";
 
 /** One unique photo per subcategory — no image is reused across subcategories. */
 export const SUB_IMAGES: Record<string, string> = {
@@ -59,39 +61,66 @@ export const SUB_IMAGES: Record<string, string> = {
   "car-parking-tiles": carParkingTiles,
   marble: marble,
   granite: granite,
+  "green-marble": greenMarble,
+  "grey-marble": greyMarble,
 };
 
-/* Bundled fallbacks keep the catalog usable when external asset storage is unavailable. */
-import radhaKrishna from "@/assets/sub/marble.jpg";
-import sitaRama from "@/assets/sub/granite.jpg";
-import lakshmi from "@/assets/sub/vanity.jpg";
-import maaKali from "@/assets/sub/bathroom-tiles.jpg";
-import saiBaba from "@/assets/sub/bathroom-accessories.jpg";
-import marbleMandir from "@/assets/sub/kitchen-tiles.jpg";
-import marbleFireplace from "@/assets/sub/elevation-tiles.jpg";
-import greenMarble from "@/assets/sub/outdoor-tiles.jpg";
-import greyMarble from "@/assets/sub/floor-tiles.jpg";
-
-export const UPLOADED_IMAGES = {
-  radhaKrishna,
-  sitaRama,
-  lakshmi,
-  maaKali,
-  saiBaba,
-  marbleMandir,
-  marbleFireplace,
-  greenMarble,
-  greyMarble,
+/* Product-specific image mapping: maps product topics/slugs to unique images */
+export const PRODUCT_IMAGES: Record<string, string> = {
+  // Marble subcategory products
+  "White Marble": marble,
+  "Italian Marble": marble,
+  "Floor Marble": marble,
+  "Wall Marble": marble,
+  "Indian Marble": marble,
+  "Beige Marble": marble,
+  "Black Marble": marble,
+  "Designer Marble": marble,
+  "Marble Slabs": marble,
+  "Marble Tiles": marble,
+  // Granite subcategory products
+  "Rajasthan Granite": granite,
+  "Absolute Black Granite": granite,
+  "Granite Slabs": granite,
+  "Granite Tiles": granite,
+  // Green Marble subcategory products
+  "Rajnagar Green Marble": greenMarble,
+  "Forest Green Marble": greenMarble,
+  "Green Marble Slabs": greenMarble,
+  "Green Marble Tiles": greenMarble,
+  // Grey Marble subcategory products
+  "Grey Veined Marble": greyMarble,
+  "Charcoal Grey Marble": greyMarble,
+  "Grey Marble Slabs": greyMarble,
+  "Grey Marble Tiles": greyMarble,
+  // Radha Krishna Statue products
+  "Radha Krishna Marble Statue": marble,
+  "Painted Radha Krishna Murti": marble,
+  "Standing Radha Krishna Statue": marble,
+  "Temple Radha Krishna Statue": marble,
+  // Sita Rama Statue products
+  "Sita Rama Marble Statue": marble,
+  "Ram Darbar Marble Murti": marble,
+  "Temple Sita Rama Statue": marble,
+  // Goddess Lakshmi Statue products
+  "Lakshmi Marble Statue": marble,
+  "Lotus Lakshmi Murti": marble,
+  "Gold Painted Lakshmi Statue": marble,
+  // Maa Kali Statue products
+  "Maa Kali Marble Statue": marble,
+  "Black Marble Kali Murti": marble,
+  "Temple Kali Statue": marble,
+  // Sai Baba Statue products
+  "Sai Baba Marble Statue": marble,
+  "Sitting Sai Baba Murti": marble,
+  "Painted Sai Baba Statue": marble,
+  // Marble Mandir products
+  "Carved Marble Mandir": marble,
+  "Dome Marble Temple": marble,
+  "Home Marble Mandir": marble,
+  "Designer Marble Temple": marble,
+  // Marble Fireplace products
+  "Carved Marble Fireplace": marble,
+  "Classic Marble Mantel": marble,
+  "Designer Marble Fireplace": marble,
 };
-
-Object.assign(SUB_IMAGES, {
-  "radha-krishna-statue": UPLOADED_IMAGES.radhaKrishna,
-  "sita-rama-statue": UPLOADED_IMAGES.sitaRama,
-  "goddess-lakshmi-statue": UPLOADED_IMAGES.lakshmi,
-  "maa-kali-statue": UPLOADED_IMAGES.maaKali,
-  "sai-baba-statue": UPLOADED_IMAGES.saiBaba,
-  "marble-mandir": UPLOADED_IMAGES.marbleMandir,
-  "marble-fireplace": UPLOADED_IMAGES.marbleFireplace,
-  "green-marble": UPLOADED_IMAGES.greenMarble,
-  "grey-marble": UPLOADED_IMAGES.greyMarble,
-});

@@ -4,7 +4,7 @@ import kitchenSinkImg from "@/assets/kitchen-sink.jpg";
 import vanityImg from "@/assets/vanity.jpg";
 import parkingImg from "@/assets/parking-tiles.jpg";
 import marbleImg from "@/assets/marble-granite.jpg";
-import { SUB_IMAGES, UPLOADED_IMAGES } from "@/data/sub-images";
+import { SUB_IMAGES, PRODUCT_IMAGES } from "@/data/sub-images";
 
 export type Category = {
   slug: string;
@@ -445,7 +445,7 @@ export const categories: Category[] = [
     slug: "marble-statues",
     name: "Marble Statues",
     tagline: "Hand-carved deity murtis in premium white and coloured marble",
-    image: UPLOADED_IMAGES.sitaRama,
+    image: marbleImg,
     subcategories: [
       {
         slug: "radha-krishna-statue",
@@ -483,7 +483,7 @@ export const categories: Category[] = [
     slug: "marble-home-interiors",
     name: "Marble Home Interiors",
     tagline: "Marble mandirs, carved fireplaces & bespoke interior stonework",
-    image: UPLOADED_IMAGES.marbleMandir,
+    image: marbleImg,
     subcategories: [
       {
         slug: "marble-mandir",
@@ -751,7 +751,7 @@ function makeProduct(cat: Category, sub: Subcategory, topic: string, index: numb
     categoryName: cat.name,
     subcategory: sub.slug,
     subcategoryName: sub.name,
-    image: SUB_IMAGES[sub.slug] ?? cat.image,
+    image: PRODUCT_IMAGES[topic] ?? SUB_IMAGES[sub.slug] ?? cat.image,
     imageFile,
     brand,
     material,
