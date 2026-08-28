@@ -83,7 +83,7 @@ function merge(overlay: Overlay, loaded: boolean): CatalogSnapshot {
       if (!sub) return null;
       merged.categoryName = cat.name;
       merged.subcategoryName = sub.name;
-      
+
       return merged;
     })
     .filter((p): p is Product => p !== null);
@@ -135,11 +135,26 @@ let snapshot: CatalogSnapshot = merge(overlay, false);
 const serverSnapshot: CatalogSnapshot = merge(emptyOverlay(), false);
 const listeners = new Set<() => void>();
 let hydrating = false;
+const channel =
+  typeof window !== "undefined" && "BroadcastChannel" in window
+    ? new BroadcastChannel("tilehaus-catalog")
+    : null;
 
 const notify = () => listeners.forEach((l) => l());
 
 function subscribe(listener: () => void) {
   listeners.add(listener);
+  if (channel && listeners.size === 1) {
+    channel.onmessage = () => {
+      void idbGet()
+        .then((stored) => {
+          overlay = { ...emptyOverlay(), ...(stored ?? {}) };
+          snapshot = merge(overlay, true);
+          notify();
+        })
+        .catch(() => undefined);
+    };
+  }
   if (typeof window !== "undefined" && !hydrating && !snapshot.loaded) {
     hydrating = true;
     idbGet()
@@ -161,6 +176,7 @@ function commit(next: Overlay) {
   snapshot = merge(overlay, true);
   notify();
   void idbSet(overlay).catch(() => undefined);
+  channel?.postMessage("catalog-updated");
 }
 
 export function useCatalog(): CatalogSnapshot {
@@ -175,7 +191,12 @@ export const getSnapshot = () => snapshot;
 
 /* ------------------------------- API ------------------------------- */
 
-export function upsertCategory(input: { slug?: string; name: string; tagline: string; image: string }) {
+export function upsertCategory(input: {
+  slug?: string;
+  name: string;
+  tagline: string;
+  image: string;
+}) {
   const isBase = baseCategories.some((c) => c.slug === input.slug);
   const slug = input.slug ?? slugify(input.name);
   if (input.slug && isBase) {
@@ -183,7 +204,12 @@ export function upsertCategory(input: { slug?: string; name: string; tagline: st
       ...overlay,
       categoryPatches: {
         ...overlay.categoryPatches,
-        [slug]: { ...overlay.categoryPatches[slug], name: input.name, tagline: input.tagline, image: input.image },
+        [slug]: {
+          ...overlay.categoryPatches[slug],
+          name: input.name,
+          tagline: input.tagline,
+          image: input.image,
+        },
       },
     });
     return slug;
@@ -193,7 +219,9 @@ export function upsertCategory(input: { slug?: string; name: string; tagline: st
     commit({
       ...overlay,
       newCategories: overlay.newCategories.map((c) =>
-        c.slug === slug ? { ...c, name: input.name, tagline: input.tagline, image: input.image } : c,
+        c.slug === slug
+          ? { ...c, name: input.name, tagline: input.tagline, image: input.image }
+          : c,
       ),
     });
     return slug;
@@ -212,33 +240,46 @@ export function deleteCategory(slug: string) {
   commit({
     ...overlay,
     newCategories: overlay.newCategories.filter((c) => c.slug !== slug),
-    categoryPatches: { ...overlay.categoryPatches, [slug]: { ...overlay.categoryPatches[slug], deleted: true } },
+    categoryPatches: {
+      ...overlay.categoryPatches,
+      [slug]: { ...overlay.categoryPatches[slug], deleted: true },
+    },
   });
 }
 
 export function upsertSubcategory(category: string, input: { slug?: string; name: string }) {
   const slug = input.slug ?? slugify(input.name);
   const key = `${category}/${slug}`;
-  const isNew = overlay.newSubcategories.some((s) => s.category === category && s.sub.slug === slug);
+  const isNew = overlay.newSubcategories.some(
+    (s) => s.category === category && s.sub.slug === slug,
+  );
   if (input.slug) {
     if (isNew) {
       commit({
         ...overlay,
         newSubcategories: overlay.newSubcategories.map((s) =>
-          s.category === category && s.sub.slug === slug ? { ...s, sub: { ...s.sub, name: input.name } } : s,
+          s.category === category && s.sub.slug === slug
+            ? { ...s, sub: { ...s.sub, name: input.name } }
+            : s,
         ),
       });
     } else {
       commit({
         ...overlay,
-        subPatches: { ...overlay.subPatches, [key]: { ...overlay.subPatches[key], name: input.name } },
+        subPatches: {
+          ...overlay.subPatches,
+          [key]: { ...overlay.subPatches[key], name: input.name },
+        },
       });
     }
     return slug;
   }
   commit({
     ...overlay,
-    newSubcategories: [...overlay.newSubcategories, { category, sub: { slug, name: input.name, topics: [] } }],
+    newSubcategories: [
+      ...overlay.newSubcategories,
+      { category, sub: { slug, name: input.name, topics: [] } },
+    ],
   });
   return slug;
 }
@@ -247,7 +288,9 @@ export function deleteSubcategory(category: string, slug: string) {
   const key = `${category}/${slug}`;
   commit({
     ...overlay,
-    newSubcategories: overlay.newSubcategories.filter((s) => !(s.category === category && s.sub.slug === slug)),
+    newSubcategories: overlay.newSubcategories.filter(
+      (s) => !(s.category === category && s.sub.slug === slug),
+    ),
     subPatches: { ...overlay.subPatches, [key]: { ...overlay.subPatches[key], deleted: true } },
   });
 }
@@ -272,7 +315,8 @@ export type ProductInput = {
 };
 
 export function upsertProduct(input: ProductInput) {
-  const discount = input.mrp > input.price ? Math.round(((input.mrp - input.price) / input.mrp) * 100) : 0;
+  const discount =
+    input.mrp > input.price ? Math.round(((input.mrp - input.price) / input.mrp) * 100) : 0;
   const cat = snapshot.categories.find((c) => c.slug === input.category);
   const sub = cat?.subcategories.find((s) => s.slug === input.subcategory);
   const patch: ProductPatch = {
@@ -301,7 +345,9 @@ export function upsertProduct(input: ProductInput) {
     if (isNew) {
       commit({
         ...overlay,
-        newProducts: overlay.newProducts.map((p) => (p.slug === input.slug ? ({ ...p, ...patch } as Product) : p)),
+        newProducts: overlay.newProducts.map((p) =>
+          p.slug === input.slug ? ({ ...p, ...patch } as Product) : p,
+        ),
       });
     } else {
       commit({
@@ -328,7 +374,10 @@ export function upsertProduct(input: ProductInput) {
     reviews: 0,
     popularity: 500,
     newness: 1000,
-    ...(patch as Omit<Product, "slug" | "imageFile" | "rating" | "reviews" | "popularity" | "newness">),
+    ...(patch as Omit<
+      Product,
+      "slug" | "imageFile" | "rating" | "reviews" | "popularity" | "newness"
+    >),
   } as Product;
 
   commit({ ...overlay, newProducts: [...overlay.newProducts, product] });
@@ -346,7 +395,10 @@ export function setProductImage(slug: string, image: string) {
   }
   commit({
     ...overlay,
-    productPatches: { ...overlay.productPatches, [slug]: { ...overlay.productPatches[slug], image } },
+    productPatches: {
+      ...overlay.productPatches,
+      [slug]: { ...overlay.productPatches[slug], image },
+    },
   });
 }
 
@@ -354,7 +406,10 @@ export function deleteProduct(slug: string) {
   commit({
     ...overlay,
     newProducts: overlay.newProducts.filter((p) => p.slug !== slug),
-    productPatches: { ...overlay.productPatches, [slug]: { ...overlay.productPatches[slug], deleted: true } },
+    productPatches: {
+      ...overlay.productPatches,
+      [slug]: { ...overlay.productPatches[slug], deleted: true },
+    },
   });
 }
 
@@ -373,7 +428,11 @@ export function importOverlay(json: string) {
 
 /* --------------------------- image upload -------------------------- */
 
-export async function fileToJpegDataUrl(file: File, maxSide = 1400, quality = 0.82): Promise<string> {
+export async function fileToJpegDataUrl(
+  file: File,
+  maxSide = 1400,
+  quality = 0.82,
+): Promise<string> {
   const bitmapUrl = URL.createObjectURL(file);
   try {
     const img = await new Promise<HTMLImageElement>((resolve, reject) => {

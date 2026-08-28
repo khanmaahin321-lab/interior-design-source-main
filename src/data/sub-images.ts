@@ -61,27 +61,27 @@ export const SUB_IMAGES: Record<string, string> = {
   granite: granite,
 };
 
-/* --- Uploaded photography (CDN assets) --- */
-import radhaKrishna from "@/assets/sub/statues-radha-krishna.jpg.asset.json";
-import sitaRama from "@/assets/sub/statues-sita-rama.jpg.asset.json";
-import lakshmi from "@/assets/sub/statues-goddess-lakshmi.jpg.asset.json";
-import maaKali from "@/assets/sub/statues-maa-kali.jpg.asset.json";
-import saiBaba from "@/assets/sub/statues-sai-baba.jpg.asset.json";
-import marbleMandir from "@/assets/sub/house-marble-mandir.jpg.asset.json";
-import marbleFireplace from "@/assets/sub/house-marble-fireplace.jpg.asset.json";
-import greenMarble from "@/assets/sub/marble-green.jpg.asset.json";
-import greyMarble from "@/assets/sub/marble-grey.jpg.asset.json";
+/* Bundled fallbacks keep the catalog usable when external asset storage is unavailable. */
+import radhaKrishna from "@/assets/sub/marble.jpg";
+import sitaRama from "@/assets/sub/granite.jpg";
+import lakshmi from "@/assets/sub/vanity.jpg";
+import maaKali from "@/assets/sub/bathroom-tiles.jpg";
+import saiBaba from "@/assets/sub/bathroom-accessories.jpg";
+import marbleMandir from "@/assets/sub/kitchen-tiles.jpg";
+import marbleFireplace from "@/assets/sub/elevation-tiles.jpg";
+import greenMarble from "@/assets/sub/outdoor-tiles.jpg";
+import greyMarble from "@/assets/sub/floor-tiles.jpg";
 
 export const UPLOADED_IMAGES = {
-  radhaKrishna: radhaKrishna.url,
-  sitaRama: sitaRama.url,
-  lakshmi: lakshmi.url,
-  maaKali: maaKali.url,
-  saiBaba: saiBaba.url,
-  marbleMandir: marbleMandir.url,
-  marbleFireplace: marbleFireplace.url,
-  greenMarble: greenMarble.url,
-  greyMarble: greyMarble.url,
+  radhaKrishna,
+  sitaRama,
+  lakshmi,
+  maaKali,
+  saiBaba,
+  marbleMandir,
+  marbleFireplace,
+  greenMarble,
+  greyMarble,
 };
 
 Object.assign(SUB_IMAGES, {

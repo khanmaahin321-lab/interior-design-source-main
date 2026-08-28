@@ -20,3 +20,5 @@ export const SITE = {
 
 export const telHref = (p: string) => `tel:${p.replace(/[^\d+]/g, "")}`;
 export const whatsappHref = `https://wa.me/${SITE.whatsapp.replace(/[^\d]/g, "")}`;
+export const whatsappMessageHref = (message: string) =>
+  `${whatsappHref}?text=${encodeURIComponent(message)}`;

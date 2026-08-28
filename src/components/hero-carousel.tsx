@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UPLOADED_IMAGES, SUB_IMAGES } from "@/data/sub-images";
-import showroom from "@/assets/showroom.png.asset.json";
+import showroom from "@/assets/marble-granite.jpg";
 
 type Slide = {
   image: string;
@@ -16,7 +16,7 @@ type Slide = {
 /** Eight hand-picked, non-duplicated showcase images for the home hero. */
 const SLIDES: Slide[] = [
   {
-    image: showroom.url,
+    image: showroom,
     eyebrow: "Kolkata showroom",
     title: "Vaishnavi Marble — Kolkata's marble destination",
     text: "Italian marble, granite, tiles, sanitaryware, mandirs and statues under one roof.",

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import {
@@ -9,11 +9,10 @@ import {
   PRICE_RANGES,
   SIZES,
   SORT_OPTIONS,
-  categories,
   getCategory,
-  products,
   type Product,
 } from "@/data/catalog";
+import { useCatalog } from "@/lib/catalog-store";
 import { ProductCard } from "@/components/product-card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -47,7 +46,11 @@ type Search = {
 type ListKey = "price" | "brand" | "color" | "material" | "finish" | "size";
 
 const toArray = (v: unknown): string[] =>
-  Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : typeof v === "string" && v ? [v] : [];
+  Array.isArray(v)
+    ? v.filter((x): x is string => typeof x === "string")
+    : typeof v === "string" && v
+      ? [v]
+      : [];
 const toNum = (v: unknown) => (typeof v === "number" && !Number.isNaN(v) ? v : undefined);
 const str = (v: unknown) => (typeof v === "string" && v ? v : undefined);
 
@@ -67,9 +70,7 @@ export const Route = createFileRoute("/category/$categorySlug")({
     max: toNum(search["max"]),
   }),
   loader: ({ params }) => {
-    const category = getCategory(params.categorySlug);
-    if (!category) throw notFound();
-    return { category };
+    return { category: getCategory(params.categorySlug), categorySlug: params.categorySlug };
   },
   head: ({ loaderData }) => {
     const name = loaderData?.category.name ?? "Products";
@@ -110,7 +111,10 @@ function sortProducts(list: Product[], sort: string) {
 }
 
 function CategoryPage() {
-  const { category } = Route.useLoaderData();
+  const loaderData = Route.useLoaderData();
+  const catalog = useCatalog();
+  const category =
+    catalog.categories.find((c) => c.slug === loaderData.categorySlug) ?? loaderData.category;
   const raw = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const search = {
@@ -138,7 +142,8 @@ function CategoryPage() {
   };
 
   const filtered = useMemo(() => {
-    let list = products.filter((p) => p.category === category.slug);
+    if (!category) return [];
+    let list = catalog.products.filter((p) => p.category === category.slug);
     if (search.sub) list = list.filter((p) => p.subcategory === search.sub);
     if (search.brand.length) list = list.filter((p) => search.brand.includes(p.brand));
     if (search.color.length) list = list.filter((p) => search.color.includes(p.color));
@@ -155,7 +160,9 @@ function CategoryPage() {
     if (search.stock === "out") list = list.filter((p) => !p.inStock);
     if (search.rating) list = list.filter((p) => p.rating >= search.rating!);
     return sortProducts(list, search.sort);
-  }, [category.slug, search]);
+  }, [catalog.products, category, category?.slug, search]);
+
+  if (!category) return <div className="container-page py-16">Category not found.</div>;
 
   const activeCount =
     search.price.length +
@@ -187,17 +194,19 @@ function CategoryPage() {
       },
     });
 
-  const group = (
-    title: string,
-    key: ListKey,
-    options: { id: string; label: string }[],
-  ) => (
+  const group = (title: string, key: ListKey, options: { id: string; label: string }[]) => (
     <div key={title} className="border-b border-border py-4">
       <p className="mb-3 text-sm font-semibold text-foreground">{title}</p>
       <div className="space-y-2">
         {options.map((o) => (
-          <label key={o.id} className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
-            <Checkbox checked={search[key].includes(o.id)} onCheckedChange={() => toggle(key, o.id)} />
+          <label
+            key={o.id}
+            className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"
+          >
+            <Checkbox
+              checked={search[key].includes(o.id)}
+              onCheckedChange={() => toggle(key, o.id)}
+            />
             {o.label}
           </label>
         ))}
@@ -210,7 +219,10 @@ function CategoryPage() {
       <div className="flex items-center justify-between py-4">
         <p className="font-display text-lg">Filters</p>
         {activeCount > 0 && (
-          <button onClick={clearAll} className="inline-flex items-center gap-1 text-xs text-primary">
+          <button
+            onClick={clearAll}
+            className="inline-flex items-center gap-1 text-xs text-primary"
+          >
             <X className="size-3" /> Clear ({activeCount})
           </button>
         )}
@@ -237,7 +249,11 @@ function CategoryPage() {
         </div>
       </div>
 
-      {group("Price", "price", PRICE_RANGES.map((r) => ({ id: r.id, label: r.label })))}
+      {group(
+        "Price",
+        "price",
+        PRICE_RANGES.map((r) => ({ id: r.id, label: r.label })),
+      )}
 
       <div className="border-b border-border py-4">
         <p className="mb-3 text-sm font-semibold text-foreground">Custom Price Range</p>
@@ -246,23 +262,47 @@ function CategoryPage() {
             type="number"
             placeholder="Min"
             value={search.min ?? ""}
-            onChange={(e) => setSearch({ min: e.target.value ? Number(e.target.value) : undefined })}
+            onChange={(e) =>
+              setSearch({ min: e.target.value ? Number(e.target.value) : undefined })
+            }
           />
           <span className="text-muted-foreground">–</span>
           <Input
             type="number"
             placeholder="Max"
             value={search.max ?? ""}
-            onChange={(e) => setSearch({ max: e.target.value ? Number(e.target.value) : undefined })}
+            onChange={(e) =>
+              setSearch({ max: e.target.value ? Number(e.target.value) : undefined })
+            }
           />
         </div>
       </div>
 
-      {group("Brand", "brand", BRANDS.map((b) => ({ id: b, label: b })))}
-      {group("Color", "color", COLORS.map((c) => ({ id: c, label: c })))}
-      {group("Material", "material", MATERIALS.map((m) => ({ id: m, label: m })))}
-      {group("Finish", "finish", FINISHES.map((f) => ({ id: f, label: f })))}
-      {group("Size", "size", SIZES.map((s) => ({ id: s, label: s })))}
+      {group(
+        "Brand",
+        "brand",
+        BRANDS.map((b) => ({ id: b, label: b })),
+      )}
+      {group(
+        "Color",
+        "color",
+        COLORS.map((c) => ({ id: c, label: c })),
+      )}
+      {group(
+        "Material",
+        "material",
+        MATERIALS.map((m) => ({ id: m, label: m })),
+      )}
+      {group(
+        "Finish",
+        "finish",
+        FINISHES.map((f) => ({ id: f, label: f })),
+      )}
+      {group(
+        "Size",
+        "size",
+        SIZES.map((s) => ({ id: s, label: s })),
+      )}
 
       <div className="border-b border-border py-4">
         <p className="mb-3 text-sm font-semibold text-foreground">Availability</p>
@@ -270,7 +310,10 @@ function CategoryPage() {
           { id: "in", label: "In Stock" },
           { id: "out", label: "Out of Stock" },
         ].map((o) => (
-          <label key={o.id} className="flex cursor-pointer items-center gap-2 py-1 text-sm text-muted-foreground">
+          <label
+            key={o.id}
+            className="flex cursor-pointer items-center gap-2 py-1 text-sm text-muted-foreground"
+          >
             <Checkbox
               checked={search.stock === o.id}
               onCheckedChange={() => setSearch({ stock: search.stock === o.id ? undefined : o.id })}
@@ -283,7 +326,10 @@ function CategoryPage() {
       <div className="py-4">
         <p className="mb-3 text-sm font-semibold text-foreground">Rating</p>
         {[4, 3].map((r) => (
-          <label key={r} className="flex cursor-pointer items-center gap-2 py-1 text-sm text-muted-foreground">
+          <label
+            key={r}
+            className="flex cursor-pointer items-center gap-2 py-1 text-sm text-muted-foreground"
+          >
             <Checkbox
               checked={search.rating === r}
               onCheckedChange={() => setSearch({ rating: search.rating === r ? undefined : r })}

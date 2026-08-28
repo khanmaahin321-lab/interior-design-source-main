@@ -5,7 +5,7 @@ import { useCatalog } from "@/lib/catalog-store";
 import { cartCount, useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import logo from "@/assets/logo.jpeg.asset.json";
+import logo from "@/assets/marble-granite.jpg";
 
 export function SiteHeader() {
   const cart = useCart();
@@ -17,7 +17,7 @@ export function SiteHeader() {
       <div className="container-page flex h-16 items-center gap-4">
         <Link to="/" className="flex items-center gap-2.5">
           <img
-            src={logo.url}
+            src={logo}
             alt="Vaishnavi Marble logo"
             width={40}
             height={40}
@@ -43,7 +43,6 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-
 
         <div className="ml-auto flex items-center gap-2">
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">

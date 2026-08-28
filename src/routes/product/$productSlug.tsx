@@ -1,22 +1,33 @@
-import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Minus, Plus, Star, Truck, ShieldCheck, RefreshCcw, Headphones, Package } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  Star,
+  Truck,
+  ShieldCheck,
+  RefreshCcw,
+  Headphones,
+  Package,
+} from "lucide-react";
 import { toast } from "sonner";
-import { getProduct, products } from "@/data/catalog";
+import { getProduct } from "@/data/catalog";
+import { useCatalog } from "@/lib/catalog-store";
 import { addToCart, inr } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product-card";
 import { productImageStyle } from "@/components/product-image";
+import { whatsappMessageHref } from "@/lib/site-info";
 
 export const Route = createFileRoute("/product/$productSlug")({
   loader: ({ params }) => {
-    const product = getProduct(params.productSlug);
-    if (!product) throw notFound();
-    return { product };
+    return { product: getProduct(params.productSlug), productSlug: params.productSlug };
   },
   head: ({ loaderData }) => {
     const p = loaderData?.product;
-    const title = p ? `${p.name} – ${inr(p.price)} ${p.unit} | Vaishnavi Marble` : "Product | Vaishnavi Marble";
+    const title = p
+      ? `${p.name} – ${inr(p.price)} ${p.unit} | Vaishnavi Marble`
+      : "Product | Vaishnavi Marble";
     const description = p
       ? `${p.description} Buy at ${inr(p.price)} (${p.discount}% off MRP ${inr(p.mrp)}).`
       : "Product details";
@@ -35,11 +46,16 @@ export const Route = createFileRoute("/product/$productSlug")({
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
+  const loaderData = Route.useLoaderData();
+  const catalog = useCatalog();
+  const product =
+    catalog.products.find((p) => p.slug === loaderData.productSlug) ?? loaderData.product;
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
 
-  const related = products
+  if (!product) return <div className="container-page py-16">Product not found.</div>;
+
+  const related = catalog.products
     .filter((p) => p.subcategory === product.subcategory && p.slug !== product.slug)
     .slice(0, 3);
 
@@ -113,7 +129,10 @@ function ProductPage() {
 
           <div className="mt-5 flex items-end gap-3">
             <span className="text-3xl font-semibold text-foreground">
-              {inr(product.price)} <span className="text-base font-normal text-muted-foreground">/ {product.unit.replace("Per ", "")}</span>
+              {inr(product.price)}{" "}
+              <span className="text-base font-normal text-muted-foreground">
+                / {product.unit.replace("Per ", "")}
+              </span>
             </span>
             <span className="pb-1 text-muted-foreground line-through">{inr(product.mrp)}</span>
             <span className="pb-1 font-semibold text-primary">{product.discount}% OFF</span>
@@ -152,6 +171,17 @@ function ProductPage() {
             >
               Buy Now
             </Button>
+            <Button asChild variant="outline">
+              <a
+                href={whatsappMessageHref(
+                  `Hello, I am interested in ${product.name} (${product.slug}). Please share availability and booking details.`,
+                )}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Enquire on WhatsApp
+              </a>
+            </Button>
           </div>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -177,14 +207,17 @@ function ProductPage() {
         <div className="mt-4 overflow-hidden rounded-xl border border-border">
           <table className="w-full text-sm">
             <tbody>
-              {[...product.specs, { label: "Availability", value: product.inStock ? "In Stock" : "Out of Stock" }].map(
-                (s, i) => (
-                  <tr key={s.label} className={i % 2 ? "bg-secondary/50" : "bg-card"}>
-                    <th className="w-56 px-4 py-3 text-left font-medium text-muted-foreground">{s.label}</th>
-                    <td className="px-4 py-3 text-foreground">{s.value}</td>
-                  </tr>
-                ),
-              )}
+              {[
+                ...product.specs,
+                { label: "Availability", value: product.inStock ? "In Stock" : "Out of Stock" },
+              ].map((s, i) => (
+                <tr key={s.label} className={i % 2 ? "bg-secondary/50" : "bg-card"}>
+                  <th className="w-56 px-4 py-3 text-left font-medium text-muted-foreground">
+                    {s.label}
+                  </th>
+                  <td className="px-4 py-3 text-foreground">{s.value}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

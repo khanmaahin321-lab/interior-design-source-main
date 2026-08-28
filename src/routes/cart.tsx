@@ -1,13 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Trash2 } from "lucide-react";
-import { toast } from "sonner";
 import { cartTotal, inr, removeFromCart, setQty, useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
+import { SITE, whatsappMessageHref } from "@/lib/site-info";
 
 export const Route = createFileRoute("/cart")({
   head: () => {
     const title = "Your Cart | Vaishnavi Marble";
-    const description = "Review your selected tiles, sanitaryware, sinks and vanities before checkout.";
+    const description =
+      "Review your selected tiles, sanitaryware, sinks and vanities before checkout.";
     return {
       meta: [
         { title },
@@ -25,6 +26,11 @@ export const Route = createFileRoute("/cart")({
 function CartPage() {
   const items = useCart();
   const total = cartTotal(items);
+  const bookingMessage = [
+    `Hello ${SITE.name}, I would like to book these products:`,
+    ...items.map((item) => `- ${item.name} x ${item.qty} (${inr(item.price * item.qty)})`),
+    `Total: ${inr(total)}`,
+  ].join("\n");
 
   return (
     <div className="container-page py-10">
@@ -42,7 +48,12 @@ function CartPage() {
           <ul className="space-y-4">
             {items.map((i) => (
               <li key={i.slug} className="flex gap-4 rounded-xl border border-border bg-card p-4">
-                <img src={i.image} alt={i.name} loading="lazy" className="size-24 rounded-md object-cover" />
+                <img
+                  src={i.image}
+                  alt={i.name}
+                  loading="lazy"
+                  className="size-24 rounded-md object-cover"
+                />
                 <div className="flex-1">
                   <Link
                     to="/product/$productSlug"
@@ -91,8 +102,10 @@ function CartPage() {
               <span>Total</span>
               <span>{inr(total)}</span>
             </div>
-            <Button className="mt-5 w-full" onClick={() => toast.success("Our team will contact you to confirm the order.")}>
-              Place Order Enquiry
+            <Button asChild className="mt-5 w-full">
+              <a href={whatsappMessageHref(bookingMessage)} target="_blank" rel="noreferrer">
+                Book via WhatsApp
+              </a>
             </Button>
           </aside>
         </div>

@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, MessageCircle, ShieldCheck } from "lucide-react";
 import { useCatalog } from "@/lib/catalog-store";
 import { SocialLinks } from "@/components/social-links";
 import { SITE, telHref, whatsappHref } from "@/lib/site-info";
-import logo from "@/assets/logo.jpeg.asset.json";
+import logo from "@/assets/marble-granite.jpg";
 
 export function SiteFooter() {
   const { categories } = useCatalog();
@@ -14,7 +14,7 @@ export function SiteFooter() {
         <div>
           <div className="flex items-center gap-2.5">
             <img
-              src={logo.url}
+              src={logo}
               alt="Vaishnavi Marble logo"
               width={44}
               height={44}
@@ -38,7 +38,9 @@ export function SiteFooter() {
 
         {categories.slice(0, 2).map((c) => (
           <div key={c.slug}>
-            <p className="text-sm font-semibold uppercase tracking-wide text-foreground">{c.name}</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-foreground">
+              {c.name}
+            </p>
             <ul className="mt-3 space-y-2">
               {c.subcategories.map((s) => (
                 <li key={s.slug}>
@@ -103,7 +105,9 @@ export function SiteFooter() {
 
       <div className="border-t border-border py-6">
         <div className="container-page flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} Vaishnavi Marble. Bulk & wholesale enquiries welcome.</span>
+          <span>
+            © {new Date().getFullYear()} Vaishnavi Marble. Bulk & wholesale enquiries welcome.
+          </span>
           <Link
             to="/admin"
             className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 transition-colors hover:text-primary"
