@@ -27,8 +27,6 @@ import antiSkidParkingTiles from "@/assets/sub/anti-skid-parking-tiles.jpg";
 import carParkingTiles from "@/assets/sub/car-parking-tiles.jpg";
 import marble from "@/assets/sub/marble.jpg";
 import granite from "@/assets/sub/granite.jpg";
-import greenMarble from "@/assets/sub/marble-green.jpg";
-import greyMarble from "@/assets/sub/marble-grey.jpg";
 
 /** One unique photo per subcategory — no image is reused across subcategories. */
 export const SUB_IMAGES: Record<string, string> = {
@@ -61,8 +59,6 @@ export const SUB_IMAGES: Record<string, string> = {
   "car-parking-tiles": carParkingTiles,
   marble: marble,
   granite: granite,
-  "green-marble": greenMarble,
-  "grey-marble": greyMarble,
 };
 
 /* Product-specific image mapping: maps product topics/slugs to unique images */
@@ -83,16 +79,16 @@ export const PRODUCT_IMAGES: Record<string, string> = {
   "Absolute Black Granite": granite,
   "Granite Slabs": granite,
   "Granite Tiles": granite,
-  // Green Marble subcategory products
-  "Rajnagar Green Marble": greenMarble,
-  "Forest Green Marble": greenMarble,
-  "Green Marble Slabs": greenMarble,
-  "Green Marble Tiles": greenMarble,
-  // Grey Marble subcategory products
-  "Grey Veined Marble": greyMarble,
-  "Charcoal Grey Marble": greyMarble,
-  "Grey Marble Slabs": greyMarble,
-  "Grey Marble Tiles": greyMarble,
+  // Green Marble subcategory products - using marble as fallback
+  "Rajnagar Green Marble": marble,
+  "Forest Green Marble": marble,
+  "Green Marble Slabs": marble,
+  "Green Marble Tiles": marble,
+  // Grey Marble subcategory products - using marble as fallback
+  "Grey Veined Marble": marble,
+  "Charcoal Grey Marble": marble,
+  "Grey Marble Slabs": marble,
+  "Grey Marble Tiles": marble,
   // Radha Krishna Statue products
   "Radha Krishna Marble Statue": marble,
   "Painted Radha Krishna Murti": marble,
