@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { UPLOADED_IMAGES, SUB_IMAGES } from "@/data/sub-images";
+import { SUB_IMAGES } from "@/data/sub-images";
 import showroom from "@/assets/marble-granite.jpg";
 
 type Slide = {
@@ -23,35 +23,35 @@ const SLIDES: Slide[] = [
     to: "tiles",
   },
   {
-    image: UPLOADED_IMAGES.radhaKrishna,
+    image: SUB_IMAGES["marble"]!,
     eyebrow: "Marble statues",
     title: "Hand-carved Radha Krishna statues",
     text: "Pure white marble idols finished with gold detailing and vibrant hand painting.",
     to: "marble-statues",
   },
   {
-    image: UPLOADED_IMAGES.lakshmi,
+    image: SUB_IMAGES["vanity"]!,
     eyebrow: "Devotional collection",
     title: "Goddess Lakshmi in flawless white marble",
     text: "Seated lotus idols crafted by master artisans for homes and temples.",
     to: "marble-statues",
   },
   {
-    image: UPLOADED_IMAGES.marbleMandir,
+    image: SUB_IMAGES["bathroom-tiles"]!,
     eyebrow: "Marble home interiors",
     title: "Bespoke marble mandirs",
     text: "Domes, pillars and jaali carving — built to your room size and budget.",
     to: "marble-home-interiors",
   },
   {
-    image: UPLOADED_IMAGES.marbleFireplace,
+    image: SUB_IMAGES["elevation-tiles"]!,
     eyebrow: "Statement pieces",
     title: "Carved marble fireplaces",
     text: "Bas-relief mantels that turn a living room into a centrepiece.",
     to: "marble-home-interiors",
   },
   {
-    image: UPLOADED_IMAGES.greenMarble,
+    image: SUB_IMAGES["outdoor-tiles"]!,
     eyebrow: "Natural stone",
     title: "Green marble with dramatic veining",
     text: "Premium slabs selected block by block, polished to a mirror finish.",

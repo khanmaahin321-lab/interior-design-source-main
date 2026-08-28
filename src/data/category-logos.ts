@@ -1,4 +1,4 @@
-import { SUB_IMAGES, UPLOADED_IMAGES } from "@/data/sub-images";
+import { SUB_IMAGES } from "@/data/sub-images";
 
 /**
  * One distinct logo image per category. Values are asserted unique at module
@@ -11,8 +11,8 @@ export const CATEGORY_LOGOS: Record<string, string> = {
   "bathroom-vanity": SUB_IMAGES["wall-mounted-vanity"]!,
   "parking-tiles": SUB_IMAGES["car-parking-tiles"]!,
   "marble-and-granite": SUB_IMAGES["granite"]!,
-  "marble-statues": UPLOADED_IMAGES.radhaKrishna,
-  "marble-home-interiors": UPLOADED_IMAGES.marbleFireplace,
+  "marble-statues": SUB_IMAGES["marble"]!,
+  "marble-home-interiors": SUB_IMAGES["elevation-tiles"]!,
 };
 
 const seen = new Set<string>();
