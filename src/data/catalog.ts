@@ -1,9 +1,9 @@
-import tilesImg from "@/assets/tiles.jpg";
-import sanitarywareImg from "@/assets/sanitaryware.jpg";
-import kitchenSinkImg from "@/assets/kitchen-sink.jpg";
-import vanityImg from "@/assets/vanity.jpg";
-import parkingImg from "@/assets/parking-tiles.jpg";
-import marbleImg from "@/assets/marble-granite.jpg";
+import tilesImg from "@/assets/categories/tiles.jpg";
+import sanitarywareImg from "@/assets/categories/sanitaryware.jpg";
+import kitchenSinkImg from "@/assets/categories/kitchen-sink.jpg";
+import vanityImg from "@/assets/categories/vanity.jpg";
+import parkingImg from "@/assets/categories/parking-tiles.jpg";
+import marbleImg from "@/assets/categories/marble-granite.jpg";
 import { SUB_IMAGES, PRODUCT_IMAGES, getProductImage } from "@/data/sub-images";
 
 export type Category = {

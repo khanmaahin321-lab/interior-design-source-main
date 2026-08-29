@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SUB_IMAGES } from "@/data/sub-images";
-import showroom from "@/assets/marble-granite.jpg";
+import showroom from "@/assets/categories/marble-granite.jpg";
 
 type Slide = {
   image: string;

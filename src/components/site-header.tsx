@@ -5,7 +5,7 @@ import { useCatalog } from "@/lib/catalog-store";
 import { cartCount, useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import logo from "@/assets/marble-granite.jpg";
+import logo from "@/assets/categories/marble-granite.jpg";
 
 export function SiteHeader() {
   const cart = useCart();

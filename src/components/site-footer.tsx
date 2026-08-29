@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, MessageCircle, ShieldCheck } from "lucide-react";
 import { useCatalog } from "@/lib/catalog-store";
 import { SocialLinks } from "@/components/social-links";
 import { SITE, telHref, whatsappHref } from "@/lib/site-info";
-import logo from "@/assets/marble-granite.jpg";
+import logo from "@/assets/categories/marble-granite.jpg";
 
 export function SiteFooter() {
   const { categories } = useCatalog();
